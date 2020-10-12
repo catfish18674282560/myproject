@@ -1,0 +1,63 @@
+{% extends 'myapp/base.html' %}
+{% block style %}
+<style>
+  /* 消除li标签的圆点 */
+  li{
+      list-style: none;
+  }
+  /* 左边的部分 */
+  .main{
+      margin-top: 20px;
+      margin-bottom: 20px;
+  }
+  /* 右边的部分 */
+  .other{
+      margin-top: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+  }
+</style>
+{% endblock %}
+
+{% block links %}active{% endblock %}
+
+{% block content %}
+
+      <!-- 文章列表 -->
+      <div class="container">
+        <div class="row">
+            <div class="col-md-8 main">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>友链条约</h4><br>
+                        <p>1.本站会保留友链作为分享，如果单方面的友链，本站随时会下架。</p>
+
+                            
+                        <p>2.双方面的友链本站会长期保存，直到变成单方面友链为止。</p>
+                            
+                            3.友链表示本站的友好和支持，若友链中存在不法现象，导致恶意后果，本站恕不负责。</p>
+                    </div>
+                </div><br>
+            <div class="card">
+                <div class="card-body">
+                    <h4>联系我</h4><br>
+                    <p>QQ:1904981400</p>
+                    <p>邮箱：catfish1921@outlook.com</p>
+                    <p>博客园地址：https://www.cnblogs.com/catfish1921/</p>
+                    <p>简书地址：https://www.jianshu.com/u/59ba127b36c6</p>
+                </div>
+            </div>
+            </div>
+            <div class="col-md-4 other">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">友链列表</h4><br>
+                        {% for one in ones %}
+                        <p><a href="{{ one.url }}" target="_blank">{{ one.title }}</a></p>
+                        {% endfor %}
+                      </div>
+                    </div>
+        </div>
+      </div>
+</div>
+{% endblock %}

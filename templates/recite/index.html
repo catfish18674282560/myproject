@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="main">
+        <div class="word">
+            {{ one.word }}
+            <p id="hans">中文意思：</p>
+        </div>
+        <a href="/admin/">后台</a>&nbsp;<a href="/">首页</a>
+    </div>
+    <script>
+        document.addEventListener("click", function(){
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "{% url 'hans' %}?word={{ one.word }}", true);
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 4 && xhr.status == 200){
+                    let info = xhr.responseText;
+                    let o = eval("("+info+")");
+                    document.querySelector("#hans").innerHTML = "中文意思：" + o.hans;
+                }
+            }
+            xhr.send();
+        })
+    </script>
+</body>
+</html>

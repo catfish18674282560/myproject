@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>欢迎光临，我的博客</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    {% block style %}{% endblock %}
+    <style>
+        /* 下面的部分 */
+        footer{
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding-top: 30px;
+            padding-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航条 -->
+    <nav class="navbar navbar-expand-sm bg-secondary navbar-dark">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link disabled" href="">catfish的个人博客</a>
+              </li>
+          <li class="nav-item {% block home %}{% endblock %}">
+            <a class="nav-link" href="{% url 'home' %}">主页</a>
+          </li>
+          <li class="nav-item {% block blog %}{% endblock %}">
+            <a class="nav-link" href="{% url 'blog' %}">博客</a>
+          </li>
+          <li class="nav-item {% block links %}{% endblock %}">
+            <a class="nav-link" href="{% url 'links' %}">友链/关于我</a>
+          </li>
+        </ul>
+      </nav>
+    
+{% block content %}{% endblock %}
+
+<!-- 看板娘 -->
+<script type="text/javascript" charset="utf-8"  src="https://files.cnblogs.com/files/liuzhou1/L2Dwidget.0.min.js"></script>
+<script type="text/javascript" charset="utf-8"  src="https://files.cnblogs.com/files/liuzhou1/L2Dwidget.min.js"></script>
+<script type="text/javascript">
+    L2Dwidget.init({"display": {
+        "superSample": 2,
+        "width": 150,
+        "height": 300,
+             "position": "right",
+                 "hOffset": 0,
+        "vOffset": 0
+          }
+     });
+</script>
+
+<!-- 点击鼠标出现富强 -->
+<script type="text/javascript">
+        /* 鼠标点击特效 - 7Core.CN */
+        var a_idx = 0;jQuery(document).ready(function($) {$("body").click(function(e) {var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");var $i = $("<span/>").text(a[a_idx]);
+        a_idx = (a_idx + 1) % a.length;var x = e.pageX,y = e.pageY;$i.css({"z-index": 100000000,"top": y - 20,"left": x,"position": "absolute","font-weight": "bold","color": "#ff6651"});$("body").append($i);$i.animate({"top": y - 180,"opacity": 0},1500,function() {$i.remove();});});});
+</script>
+
+<!-- 背景特效 -->
+
+<script src="{% static 'js/texiao.js' %}"></script>
+
+
+<!-- 页脚 -->
+    <footer>
+        ©2020 - 2021 | CATFISH1921.COM | POWERED BY Django 3.1.1 & Bootstrap | 站长统计 | 服务托管于腾讯云 | 鄂ICP备19025576号-1
+    </footer>
+    
+</body>
+</html>
+

@@ -1,0 +1,93 @@
+{% extends 'myapp/base.html' %}
+{% block style %}
+<style>
+    /* 轮播图 */
+    .carousel-inner img {
+        width: 100%;
+        height: 100%;
+    }
+  /* 消除li标签的圆点 */
+  li{
+      list-style: none;
+  }
+  /* 左边的部分 */
+  .main{
+      margin-top: 20px;
+      margin-bottom: 20px;
+  }
+  /* 右边的部分 */
+  .other{
+      margin-top: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+  }
+</style>
+{% endblock %}
+
+{% block home %}active{% endblock %}
+
+{% block content %}
+      <!-- 轮播图 -->
+      <div id="demo" class="carousel slide" data-ride="carousel">
+
+        <ul class="carousel-indicators">
+          <li data-target="#demo" data-slide-to="0" class="active"></li>
+          <li data-target="#demo" data-slide-to="1" class="active"></li>
+          <li data-target="#demo" data-slide-to="2" class="active"></li>
+        </ul>
+    
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="{% static 'image/1.jpg' %}">
+          </div>
+          <div class="carousel-item active">
+            <img src="{% static 'image/2.jpg' %}">
+          </div>
+          <div class="carousel-item active">
+            <img src="{% static 'image/3.jpg' %}">
+          </div>
+        </div>
+       
+     
+        <a class="carousel-control-prev" href="#demo" data-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#demo" data-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </a>
+       
+      </div>
+
+      <!-- 文章列表 -->
+      <div class="container">
+        <div class="row">
+            <div class="col-md-8 main">
+                <div class="card">
+                    <div class="card-body">
+                        {% for one in ones %}
+                        <div class="list">
+                            <h4><a href="{% url 'article' one.id %}">{{ one.title }}</a></h4>
+                            <p>{{ one.content|truncatechars:100 }} ... </p>
+                        </div><hr>
+                        {% empty %}
+                        <p>暂无文章</p>
+                        {% endfor %}
+                </div>
+                </div>
+            </div>
+            <!-- 右边的书籍 -->
+            <div class="col-md-4 other">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">热门文章</h4><br>
+                        {% for hot in hots %}
+                        <p><a href="{% url 'article' hot.id %}" class="card-link">{{ hot.title }}</a></p>
+                        {% empty %}
+                        <p>暂无文章</p>
+                        {% endfor %}
+                      </div>
+                    </div>
+        </div>
+      </div>
+</div>
+{% endblock %}

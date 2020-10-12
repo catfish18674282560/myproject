@@ -1,0 +1,58 @@
+{% extends 'myapp/base.html' %}
+{% block style %}
+<style>
+  /* 消除li标签的圆点 */
+  li{
+      list-style: none;
+  }
+  /* 左边的部分 */
+  .main{
+      margin-top: 20px;
+      margin-bottom: 20px;
+  }
+  /* 右边的部分 */
+  .other{
+      margin-top: 20px;
+      text-align: center;
+      margin-bottom: 400px;
+  }
+</style>
+{% endblock %}
+
+{% block blog %}active{% endblock %}
+
+{% block content %}
+               
+	        <!-- 文章列表 -->
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 main">
+						<div class="card">
+							<div class="card-body">
+                {% for one in ones %}
+								<div class="list">
+									<h4><a href="{% url 'article' one.id %}" target="_blank">{{ one.title }}</a></h4>
+									<p>{{ one.content|truncatechars:100 }} ... </p>
+                  </div><hr>
+                {% empty %}
+                <p>暂无文章</p>
+                {% endfor %}
+						</div>
+						</div>
+					</div>
+					<div class="col-md-4 other">
+							<div class="card">
+							  <div class="card-body">
+                    <h4 class="card-title">书籍列表</h4><br>
+                      {% for book in books %}
+                      <p><a href="{% url 'booklist' book.id %}" class="card-link"  target="_blank">《 {{ book.name }}(共{{ book.all_article_count }}篇) 》</a></p>
+                      {% empty %}
+                      <p>暂无书籍</p>
+                      {% endfor %}
+							  </div>
+							</div>
+				</div>
+			  </div>
+		</div>
+
+{% endblock %}

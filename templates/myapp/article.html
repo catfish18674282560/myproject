@@ -1,0 +1,342 @@
+{% extends 'myapp/base.html' %}
+{% block style %}
+<!-- 代码块高亮 -->
+<link rel="stylesheet" type="text/css" href="{% static 'js/highlight/styles/railscasts.css' %}">
+<script src="{% static 'js/highlight/highlight.pack.js' %}"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- ckeditor编辑器 -->
+<script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
+<style>
+  html{
+      scroll-behavior: smooth;
+  }
+  /* 消除li标签的圆点 */
+  li{
+      list-style: none;
+  }
+  /* 左边的部分 */
+  .main{
+      margin-top: 20px;
+      margin-bottom: 20px;
+  }
+  /* 右边的部分 */
+  .relative-article{
+      margin-top: 20px;
+      text-align: center;
+      margin-bottom: 350px;
+  }
+  .article-ctg{
+    margin-top: 20px;
+  }
+  .article-catalog{
+    text-align: center;
+  }
+  /* 全局布置 */
+  h1{
+    font-size: 30px;
+  }
+  h2{
+    font-size: 25px;
+    color: skyblue;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  h3{
+    font-size: 20px;
+    color: violet;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .content li{
+    list-style: circle
+  }
+  #catalog li{
+    list-style: circle
+  }
+  table {
+      font-family: verdana,arial,sans-serif;
+      font-size:11px;
+      color:#333333;
+      border-width: 1px;
+      border-color: #666666;
+      border-collapse: collapse;
+  }
+  table th {
+      border-width: 1px;
+      padding: 8px;
+      border-style: solid;
+      border-color: #666666;
+      background-color: #dedede;
+  }
+  table td {
+      border-width: 1px;
+      padding: 8px;
+      border-style: solid;
+      border-color: #666666;
+      background-color: #ffffff;
+  }
+  /* 回到顶部 */
+  .to-top{
+    width: 50px;
+    height: 50px;
+    background-color: skyblue;
+    position: fixed;
+    right: 0px;
+    top: 50%;
+    padding-left: 8px;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+  /* 评论模块 */
+  .comment{
+    margin-top: 30px;
+  }
+  [type="submit"]{
+    margin-top: 10px;
+  }
+  .comment-title span{
+    color: orange;
+  }
+  .comment-content{
+    padding-left: 30px;
+    line-height: 25px;
+  }
+  .comment-reply{
+    color: violet;
+    margin-top: -13px;
+  }
+</style>
+{% endblock %}
+
+{% block about %}active{% endblock %}
+
+{% block content %}
+<!-- 回归顶部按钮 -->
+
+<div class="to-top">回归顶部</div>
+<script>
+  document.querySelector(".to-top").addEventListener("click", ()=>{
+    location.href = "#";
+  });
+</script>
+
+
+<!-- 左边内容 -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 main">
+            <div class="card">
+                <div class="card-body">
+                    <!-- 文章内容 -->
+                        <div class="page-header">
+                         <h1>{{ one.title }}</h1>
+                        <hr>
+                        </div>
+                        <div class="content">
+                        {{ one.content | safe }}
+                        </div>
+                </div>
+              </div>
+              <div class="card comment">
+                <div class="card-body">
+                  <h1>文章留言</h1>
+                  <p>1. 您可以在您喜欢的文章下面留言</p>
+                  <p>2. 留言不会立即显示，留言会经过博主同意才能显示</p>
+                  <p>3. 博主同意后可能对您的评论进行回复，所以请填写QQ号码从QQ邮箱中第一时间收到消息</p>
+                  <form id="comment-forms" action="" method="get">
+                    昵称：<input id="username" name="username" type="text" placeholder="请输入您的昵称">
+                    QQ: <input id="QQ" name="QQ0" type="text" placeholder="请输入您的QQ号码"><br><br>
+                    <textarea id="editor" name="comment" placeholder="请输入您想说的话">
+                      
+                    </textarea>
+                    <p><input id="submit" type="submit" value="提交"></p>
+                    <p id=warning style="color: red;"></p>
+                    <p id="success" style="color: green;"></p>
+                  </form>
+                  <script>
+                    // ckeditor编辑器
+                    let editor;
+                    ClassicEditor
+                        .create( document.querySelector( '#editor' ), {
+                          toolbar: [''],
+                        })
+                        .then( newEditor => {
+                          editor = newEditor;
+                        } )
+                        .catch( error => {
+                            console.error( error );
+                        } );
+                </script>
+                  <script>
+
+                    // ajax请求
+                    function createXHR(){
+                      let XHR = [
+                        function(){return new XMLHttpRequest()},
+                        function(){return new ActiveXObject("Msxml3.XMLHTTP")},
+                        function(){return new ActiveXObject("Msxml2.XMLHTTP")},
+                        function(){return new ActiveXObject("Microsoft.XMLHTTP")},
+                      ]
+                      let xhr;
+                      for(let i=0; i<XHR.length; i++){
+                        try{
+                          xhr = XHR[i]();
+                        }catch(e){
+                          continue
+                        }
+                        break;
+                      }
+                      return xhr;
+                    }
+
+                    // 表单验证
+                    let warning = document.querySelector("#warning");
+                    let submit = document.querySelector("#submit");
+                    let success = document.querySelector("#success")
+                    // 用户名表单验证
+                    document.querySelector("#comment-forms").addEventListener("submit", function(e){
+                      let event = e || window.event; 
+                      let username = document.querySelector("#username");
+                      let qq = document.querySelector("#QQ");
+                      if(username.value=="catfish1921" || username.value == "catfish"){
+                        success.innerHTML = "";
+                        warning.innerHTML = "不好意思，这是我的专用名!";
+                        event.preventDefault();
+                      }
+                      else if(username.value.length >= 20){
+                        success.innerHTML = "";
+                        warning.innerHTML = "用户名长度不能超过20位!";
+                        event.preventDefault();
+                      }
+                      else if(username.value == ""){
+                        success.innerHTML = "";
+                        warning.innerHTML = "昵称不能为空!";
+                        event.preventDefault();
+                      }
+                      else if(!(/^\d+$/.test(qq.value))){
+                        success.innerHTML = "";
+                        warning.innerHTML = "QQ必须是数字!";
+                        event.preventDefault();
+                      }
+                      else if(editor.getData() == ""){
+                        success.innerHTML = "";
+                        warning.innerHTML = "留言不能为空！";
+                        event.preventDefault();
+                      }
+                      else{
+                        event.preventDefault();
+                        let xhr = createXHR();
+                        url = "{% url 'comment' %}"+"?username=" + username.value + "&QQ=" + qq.value + "&comment=" + editor.getData() + "&from_url=" + {{ one_id }}
+                        xhr.open("get", url, true);
+                        xhr.onreadystatechange = function(){
+                          if(xhr.readyState == 4 && xhr.status == 200){
+                            warning.innerHTML = "";
+                            success.innerHTML = "操作成功！";
+                          }
+                        }
+                        xhr.send();
+                        username.value = "";
+                        qq.value = "";
+                        editor.setData("");
+                      }
+                    })
+
+                  </script>
+                </div>
+              </div>
+
+              <div class="card comment">
+                <div class="card-body">
+                  <h1>留言列表</h1><hr>
+                  {% for comment in comments %}
+                  <div class="comment-one">
+                    <div class="comment-title"> <span>FROM</span> {{ comment.username }} ：</div>
+                    <div class="comment-content">{{ comment.content | safe }}</div>
+                  </div>
+                  <div class="comment-reply">博主回复：{{ comment.reply }}</div>
+                  <hr>
+                  {% empty %}
+                  <p>暂无人留言</p>
+                  {% endfor %}
+                </div>
+              </div>
+              
+    </div>
+
+<!-- 右边 -->
+    <div class="col-md-4 other">
+      <div class="card article-ctg">
+        <div class="card-body">
+          <h4 class="card-title article-catalog">文章目录</h4>
+          <ul id="catalog"></ul>
+        </div>
+      </div>
+
+
+      <br>
+        <div class="card relative-article">
+          <div class="card-body">
+            <h4 class="card-title">相关文章</h4><br>
+            {% for total in totals %}
+            {% if total.id == one.id %}
+            <p style="color:red">{{ total.title }}</p>
+            {% else %}
+            <p><a href="{% url 'article' total.id %}" class="card-link">{{ total.title }}</a></p>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+</div>
+    </div>
+    </div>
+
+  </div>
+  <script>
+    function AddLi(i){
+        let oLi = document.createElement("li");
+        let a = document.createElement("a");
+        oLi.append(a);
+        a.href = "#"+i.innerText;
+        a.innerHTML = i.innerText;
+        return oLi
+    }
+    let hs = document.querySelectorAll("h2, h3");
+    for(let i of hs){
+        i.id = i.innerText;
+        if(i.tagName == "H2"){
+            let oLi = AddLi(i);      // 添加组装好的li标签
+            oLi.className = "one";
+            document.querySelector("#catalog").append(oLi);
+        }else{
+            let li = document.querySelectorAll(".one");
+            // 首先在判断最后一个标签有没有ul标签
+            let obj = li[li.length-1].querySelectorAll("ul");
+            console.log(obj);
+            if(obj.length){
+                // 有ul标签
+                console.log("有ul标签");
+                // 就把ul标签取出来，然后把li标签放进去
+                let obj_ul = document.querySelectorAll(".two")
+                let oli = AddLi(i)
+                obj_ul[obj_ul.length-1].append(oli);
+            }else{
+                // 没有ul标签
+                console.log("没有ul标签");
+                // 创建一个ul标签
+                let obj_ul = document.createElement("ul");
+                obj_ul.className = "two";
+                // 然后再ul标签中添加li标签
+                let oLi = AddLi(i);
+                obj_ul.append(oLi);
+                // 把这个ul标签放道第一级最后一个li标签中
+                let obj_li = document.querySelectorAll(".one");
+                obj_li[obj_li.length-1].append(obj_ul);
+            }
+            // 如果没有ul标签，就到上一个li标签里面新建添加ul标签
+            // 如果有ul标签，那么就不用创建ul标签了，就直接在ul标签里面添加li标签
+
+        }
+    }
+</script>
+
+{% endblock %}
