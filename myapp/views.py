@@ -22,11 +22,15 @@ def article(request, id):
     one = get_object_or_404(Article, pk=id)
     one.look += 1
     one.save()
-    one.content = markdown.markdown(one.content, extensions=[
-        'markdown.extensions.extra',
-        'markdown.extensions.codehilite',
-        'markdown.extensions.toc',
-    ])
+    # one.content = markdown.markdown(one.content, extensions=[
+    #     'markdown.extensions.extra',
+    #     'markdown.extensions.codehilite',
+    #     'markdown.extensions.toc',
+    # ])
+    from mdx_math import MathExtension
+
+    md = markdown.Markdown(extensions=[MathExtension(enable_dollar_delimiter=True), 'markdown.extensions.extra', 'markdown.extensions.codehilite', 'markdown.extensions.toc'])
+    one.content = md.convert(one.content)
     totals = one.book.article.filter(status='published')
     one_id = id
     comments = one.comment.filter(is_show=True)

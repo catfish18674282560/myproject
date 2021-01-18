@@ -19,9 +19,17 @@
             padding-top: 30px;
             padding-bottom: 30px;
         }
+	.progress{
+		position:fixed;
+		top:0;height:5px;
+		background:red;
+		z-index: 1;
+	}
     </style>
 </head>
 <body>
+    <!-- 进度条 -->
+    <div class="progress"></div>
     <!-- 导航条 -->
     <nav class="navbar navbar-expand-sm bg-secondary navbar-dark">
         <ul class="navbar-nav">
@@ -71,9 +79,20 @@
 
 <!-- 页脚 -->
     <footer>
-        ©2020 - 2021 | CATFISH1921.COM | POWERED BY Django 3.1.1 & Bootstrap | 站长统计 | 服务托管于腾讯云 | 鄂ICP备19025576号-1
+        ©2020 - 2021 | CATFISH1921.COM | POWERED BY Django 3.1.1 & Bootstrap | 站长统计 | 服务托管于腾讯云 | 鄂ICP备2020019563号
     </footer>
-    
+	<script>
+		    (function(){
+			            let pageHeight = document.body.scrollHeight || document.documentElement.scrollHeight; // 页面总高度
+			            let windowHeight = document.documentElement.clientHeight || document.body.clientHeight; // 浏览器视口高度
+			            let scrollAvail = pageHeight - windowHeight; // 可滚动的高度
+			            window.onscroll = function () {
+					                let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;  // 获取滚动条的高度
+					                console.log('滚动条的高度：', scrollTop);
+					                document.querySelector('.progress').style.width = (scrollTop/scrollAvail)*100 + '%';    // 计算占比
+					            };
+			        }());
+	</script>
 </body>
 </html>
 

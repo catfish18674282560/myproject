@@ -1,18 +1,13 @@
 /*
     DJANGO Admin styles
 */
-
 @import url(fonts.css);
-
-html, body {
-    height: 100%;
-}
 
 body {
     margin: 0;
     padding: 0;
     font-size: 14px;
-    font-family: "Roboto","Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+    font-family: "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
     color: #333;
     background: #fff;
 }
@@ -56,7 +51,7 @@ p {
     line-height: 140%;
 }
 
-h1,h2,h3,h4,h5 {
+h1, h2, h3, h4, h5 {
     font-weight: bold;
 }
 
@@ -98,7 +93,7 @@ h5 {
     letter-spacing: 1px;
 }
 
-ul > li {
+ul li {
     list-style-type: square;
     padding: 1px 0;
 }
@@ -128,7 +123,6 @@ form {
 
 fieldset {
     margin: 0;
-    min-width: 0;
     padding: 0;
     border: none;
     border-top: 1px solid #eee;
@@ -146,7 +140,6 @@ code, pre {
     font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
     color: #666;
     font-size: 12px;
-    overflow-x: auto;
 }
 
 pre.literal-block {
@@ -177,8 +170,20 @@ hr {
     font-size: 11px;
 }
 
+.tiny {
+    font-size: 10px;
+}
+
+p.tiny {
+    margin-top: -2px;
+}
+
 .mini {
     font-size: 10px;
+}
+
+p.mini {
+    margin-top: -3px;
 }
 
 .help, p.help, form p.help, div.help, form div.help, div.help li {
@@ -187,7 +192,7 @@ hr {
 }
 
 div.help ul {
-     margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 .help-tooltip {
@@ -203,8 +208,30 @@ p img, h1 img, h2 img, h3 img, h4 img, td img {
     font-weight: normal;
 }
 
+.float-right {
+    float: right;
+}
+
+.float-left {
+    float: left;
+}
+
 .clear {
     clear: both;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.example {
+    margin: 10px 0;
+    padding: 5px 10px;
+    background: #efefef;
 }
 
 .nowrap {
@@ -256,14 +283,11 @@ tr.alt {
     background: #f6f6f6;
 }
 
-tr:nth-child(odd), .row-form-errors {
+.row1 {
     background: #fff;
 }
 
-tr:nth-child(even),
-tr:nth-child(even) .errorlist,
-tr:nth-child(odd) + .row-form-errors,
-tr:nth-child(odd) + .row-form-errors .errorlist {
+.row2 {
     background: #f9f9f9;
 }
 
@@ -389,6 +413,7 @@ input, textarea, select, .form-row p, form .button {
     font-weight: normal;
     font-size: 13px;
 }
+
 .form-row div.help {
     padding: 2px 3px;
 }
@@ -408,7 +433,7 @@ input[type=number], input[type=tel], textarea, select, .vTextField {
 input[type=text]:focus, input[type=password]:focus, input[type=email]:focus,
 input[type=url]:focus, input[type=number]:focus, input[type=tel]:focus,
 textarea:focus, select:focus, .vTextField:focus {
-    border-color: #999;
+    border-color: #409EFF;
 }
 
 select {
@@ -416,8 +441,6 @@ select {
 }
 
 select[multiple] {
-    /* Allow HTML size attribute to override the height in the rule above. */
-    height: auto;
     min-height: 150px;
 }
 
@@ -595,9 +618,22 @@ td ul.errorlist li {
     padding-left: 0;
 }
 
-.errors input, .errors select, .errors textarea,
-td ul.errorlist + input, td ul.errorlist + select, td ul.errorlist + textarea {
+.errors input, .errors select, .errors textarea {
     border: 1px solid #ba2121;
+}
+
+div.system-message {
+    background: #ffc;
+    margin: 10px;
+    padding: 6px 8px;
+    font-size: .8em;
+}
+
+div.system-message p.system-message-title {
+    padding: 4px 5px 4px 25px;
+    margin: 0;
+    color: #c11;
+    background: #ffefef url(../img/icon-no.svg) 5px 5px no-repeat;
 }
 
 .description {
@@ -625,11 +661,6 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
 }
 
 /* ACTION ICONS */
-
-.viewlink, .inlineviewlink {
-    padding-left: 16px;
-    background: url(../img/icon-viewlink.svg) 0 1px no-repeat;
-}
 
 .addlink {
     padding-left: 16px;
@@ -663,7 +694,7 @@ a.deletelink:focus, a.deletelink:hover {
     padding-left: 0;
     float: right;
     position: relative;
-    margin-top: -48px;
+    margin-top: -30px;
 }
 
 .form-row .object-tools {
@@ -701,11 +732,11 @@ a.deletelink:focus, a.deletelink:hover {
     background-color: #417690;
 }
 
-.object-tools a:focus{
+.object-tools a:focus {
     text-decoration: none;
 }
 
-.object-tools a.viewsitelink, .object-tools a.golink,.object-tools a.addlink {
+.object-tools a.viewsitelink, .object-tools a.golink, .object-tools a.addlink {
     background-repeat: no-repeat;
     background-position: right 7px center;
     padding-right: 26px;
@@ -736,27 +767,13 @@ table#change-history tbody th {
     width: 100%;
     min-width: 980px;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-#container > div {
-    flex-shrink: 0;
-}
-
-#container > .main {
-    display: flex;
-    flex: 1 0 auto;
-}
-
-.main > .content {
-    flex:  1 0;
-    max-width: 100%;
 }
 
 #content {
-    padding: 20px 40px;
+    padding: 20px;
+    background-color: white;
+    margin: 20px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
 }
 
 .dashboard #content {
@@ -808,12 +825,10 @@ table#change-history tbody th {
 
 #header {
     width: auto;
-    height: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    height: 40px;
     padding: 10px 40px;
-    background: #417690;
+    background: #1b93e1;
+    line-height: 40px;
     color: #ffc;
     overflow: hidden;
 }
@@ -822,7 +837,7 @@ table#change-history tbody th {
     color: #fff;
 }
 
-#header a:focus , #header a:hover {
+#header a:focus, #header a:hover {
     text-decoration: underline;
 }
 
@@ -839,7 +854,7 @@ table#change-history tbody th {
 }
 
 #branding h1, #branding h1 a:link, #branding h1 a:visited {
-    color: #f5dd5d;
+    color: #FFF;
 }
 
 #branding h2 {

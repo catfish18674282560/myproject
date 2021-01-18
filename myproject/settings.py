@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '&l^$nt%@cjgdpc88+yb0h7rwg@$4z6d3ng(^kgwdu6ox8zk1t)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -135,7 +135,9 @@ MEDIA_URL = '/media/'
 
 EMAIL_USER_SSL = True
 EMAIL_HOST = "smtp.qq.com"
-EMAIL_PORT = 25               # 端口
+EMAIL_PORT = 465               # 端口
 EMAIL_HOST_USER = '1904981400@qq.com'                       # 写自己的发送邮件的账号
 EMAIL_HOST_PASSWORD = 'rvgenfvumbcncgia'   # 写自己的授权码
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_USE_SSL = True
+CONFIRM_DAYS=2
