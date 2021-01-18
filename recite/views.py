@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from .models import Words
 
 def index(request):
-    one = Words.objects.order_by("?").first()
+    one = Words.objects.filter(is_recite=True).order_by("?").first()
     return render(request, "recite/index.html", locals())
 
 def hans(request):
